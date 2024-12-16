@@ -1,33 +1,95 @@
+# محاكاة نظام تحديد الموقع الجغرافي والارتفاع
+# GPS System Simulation for Location and Altitude Determination
+
+## مواصفات النظام 
+يتكون من 32 قمرًا صناعيًا مع إمكانية الاتصال مع 12 قمرًا كحد أقصى.
+
+يمكنه تحديد الموقع الجغرافي عند الاتصال بـ 3 أقمار صناعية.
+
+يمكنه قياس الارتفاع عن سطح البحر عند الاتصال بـ 4 أقمار صناعية.
+
+## System Specifications:
+
+Comprises 32 satellites with the capability to connect with up to 12 at a time.
+
+Can determine geographic location by connecting with 3 satellites.
+
+Can measure altitude above sea level by connecting with 4 satellites.
+
+##
+تفاصيل النظام:
+
+يستخدم تقنية الطيف المنتشر عبر شفرات PN code.
+
+كل شفرة تتكون من 1024 بت.
+
+يقوم المستقبل عند استقبال الإشارة بعملية correlation بين الإشارات المستقبلة والإشارات المسجلة مسبقًا. إذا كانت الإشارة صحيحة (حصلت على أعلى قيمة)، يقوم بفك التشفير واستخلاص البيانات.
+
+تفاصيل شفرات PN code:
+
+Auto / Cross Correlation
+
+##  system details
+Uses Spread Spectrum technology via PN code.
+
+Each code consists of 1024 bits.
+
+When the receiver receives a signal, it performs a correlation between the received signals and pre-recorded signals. If the signal is correct (obtains the highest value), it decodes it and extracts the data.
+
+Details of PN codes: Auto / Cross Correlation.
+
+## خطوات عمل النظام
+
+توليد 32 كود PN كمحاكاة للأقمار الصناعية.
+
+تشفير الأكواد وتعديلها.
+
+استقبال الإشارة بواسطة المستقبل.
+
+فك تعديل الإشارة وحساب الـ Auto-correlation. إذا كانت العملية صحيحة، يقوم بفك التشفير واستخلاص البيانات.
+
+محاكاة واقعية لحساب الموقع (خط العرض والارتفاع) باستخدام 3 أقمار صناعية عشوائية.
+
+محاكاة واقعية لحساب الارتفاع عن سطح البحر باستخدام 4 أقمار صناعية عشوائية.
+
+## System Steps:
+Generates 32 PN codes to simulate the satellite.
+
+Encodes and modulates the codes.
+
+The receiver receives the signal.
+
+The receiver demodulates the signal and calculates the Auto-correlation. If the process is correct, it decodes it accurately and extracts the data.
+
+Realistic simulation to calculate the location (Latitude & Altitude) using 3 random satellites.
+
+Realistic simulation to calculate the altitude above sea level using 4 random satellites.
+
+----------------------
 ---
-jupyter:
-  kernelspec:
-    display_name: base
-    language: python
-    name: python3
-  language_info:
-    codemirror_mode:
-      name: ipython
-      version: 3
-    file_extension: .py
-    mimetype: text/x-python
-    name: python
-    nbconvert_exporter: python
-    pygments_lexer: ipython3
-    version: 3.12.4
-  nbformat: 4
-  nbformat_minor: 2
 ---
 
-::: {.cell .code execution_count="31"}
+Libraries and Imports:
+- NumPy: Math and array operations
+- Matplotlib: Creating graphs
+- SciPy Signal: Signal processing
+- Random: Generating random data
+
 ``` python
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import correlate
 import random
 ```
-:::
+PN Code Generation Function:
+- Creates random binary code sequence
+- Used in GPS and communication systems
+- Generates codes of specified length
 
-::: {.cell .code execution_count="32"}
+Random Bits Generation
+- Creates 1024 random binary bits
+- Uses NumPy's random integer generator
+- Simulates random data transmission
 ``` python
 def generate_pn_code(length):
     """Generate PN code with values 0 and 1"""
@@ -81,16 +143,16 @@ plt.tight_layout()
 plt.show()
 ```
 
-::: {.output .display_data}
+
 ![](vertopal_8766471c28844445b54af30cbae16292/12d23eb7ed5f22173ac0e848792f25e6deb1b450.png)
-:::
 
-::: {.output .display_data}
 ![](vertopal_8766471c28844445b54af30cbae16292/470894e5dc030eb28353ff15fbdab5a4c6c358d2.png)
-:::
-:::
 
-::: {.cell .code execution_count="33"}
+BPSK Modulation
+- Converts binary bits to phase shifts
+- Transforms 0/1 to -1/1 values
+- Encodes information in signal phase
+
 ``` python
 def bpsk_modulate(pn_code):
     """Modulate a PN code using BPSK, converting 0 to -1 and 1 to 1"""
@@ -118,12 +180,13 @@ plt.tight_layout()
 plt.show()
 ```
 
-::: {.output .display_data}
 ![](vertopal_8766471c28844445b54af30cbae16292/1d09a36a3b6407bedf7d2e5e9b67f0505c16f411.png)
-:::
-:::
 
-::: {.cell .code execution_count="34"}
+Noise Addition
+- Simulates real-world signal conditions
+- Adds Gaussian random noise
+- Tests signal robustness
+
 ``` python
 # Parameters
 fs = 1024  # Sampling frequency
@@ -149,12 +212,9 @@ plt.grid()
 plt.show()
 ```
 
-::: {.output .display_data}
-![](vertopal_8766471c28844445b54af30cbae16292/a3a853eee8e2733b21f575648f7e88d9bf9d36b3.png)
-:::
-:::
 
-::: {.cell .code execution_count="35"}
+![](vertopal_8766471c28844445b54af30cbae16292/a3a853eee8e2733b21f575648f7e88d9bf9d36b3.png)
+Signal Correlation
 ``` python
 def correlate(received_signal, pn_code):
     """Compute the correlation between the received signal and a PN code"""
@@ -192,22 +252,9 @@ plt.ylabel("Amplitude")
 plt.grid()
 plt.show()
 ```
-
-::: {.output .stream .stdout}
-    Best match index: 0
-    Highest correlation value: 1019.1604116749845
-:::
-
-::: {.output .display_data}
 ![](vertopal_8766471c28844445b54af30cbae16292/8fd205702b832e3872f8ad39b314c3f921f7aae0.png)
-:::
-
-::: {.output .display_data}
 ![](vertopal_8766471c28844445b54af30cbae16292/fb1fce18cc247d84217c33097de028f2cf85405a.png)
-:::
-:::
 
-::: {.cell .code execution_count="36"}
 ``` python
 # Select three random PN codes (simulated satellites)
 random_satellites_indices = random.sample(range(32), 3)
@@ -216,12 +263,6 @@ random_satellites = [pn_codes[i] for i in random_satellites_indices]
 print("Selected Satellites Indices for Location Calculation:", random_satellites_indices)
 ```
 
-::: {.output .stream .stdout}
-    Selected Satellites Indices for Location Calculation: [26, 2, 21]
-:::
-:::
-
-::: {.cell .code execution_count="37"}
 ``` python
 def calculate_location(sat_signals):
     return [sum(signal) for signal in sat_signals]  # Simplified example
@@ -229,13 +270,6 @@ def calculate_location(sat_signals):
 location = calculate_location(random_satellites)
 print("Simulated Location (Latitude, Longitude):", location)
 ```
-
-::: {.output .stream .stdout}
-    Simulated Location (Latitude, Longitude): [485, 507, 515]
-:::
-:::
-
-::: {.cell .code execution_count="38"}
 ``` python
 # Select four random PN codes (simulated satellites)
 random_altitude_sat_indices = random.sample(range(32), 4)
@@ -243,13 +277,6 @@ random_altitude_sats = [pn_codes[i] for i in random_altitude_sat_indices]
 
 print("Selected Satellites Indices for Altitude Calculation:", random_altitude_sat_indices)
 ```
-
-::: {.output .stream .stdout}
-    Selected Satellites Indices for Altitude Calculation: [5, 2, 9, 21]
-:::
-:::
-
-::: {.cell .code execution_count="39"}
 ``` python
 # Dummy function to simulate altitude calculation
 def calculate_altitude(sat_signals):
@@ -260,13 +287,3 @@ def calculate_altitude(sat_signals):
 altitude = calculate_altitude(random_altitude_sats)
 print("Simulated Altitude:", altitude)
 ```
-
-::: {.output .stream .stdout}
-    Simulated Altitude: 508.25
-:::
-:::
-
-::: {.cell .code}
-``` python
-```
-:::
