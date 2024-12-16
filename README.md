@@ -262,7 +262,7 @@ random_satellites = [pn_codes[i] for i in random_satellites_indices]
 
 print("Selected Satellites Indices for Location Calculation:", random_satellites_indices)
 ```
-
+Selected Satellites Indices for Location Calculation: [26, 2, 21]
 ``` python
 def calculate_location(sat_signals):
     return [sum(signal) for signal in sat_signals]  # Simplified example
@@ -270,6 +270,7 @@ def calculate_location(sat_signals):
 location = calculate_location(random_satellites)
 print("Simulated Location (Latitude, Longitude):", location)
 ```
+Simulated Location (Latitude, Longitude): [485, 507, 515]
 ``` python
 # Select four random PN codes (simulated satellites)
 random_altitude_sat_indices = random.sample(range(32), 4)
@@ -277,6 +278,7 @@ random_altitude_sats = [pn_codes[i] for i in random_altitude_sat_indices]
 
 print("Selected Satellites Indices for Altitude Calculation:", random_altitude_sat_indices)
 ```
+Selected Satellites Indices for Altitude Calculation: [5, 2, 9, 21]
 ``` python
 # Dummy function to simulate altitude calculation
 def calculate_altitude(sat_signals):
@@ -287,3 +289,4 @@ def calculate_altitude(sat_signals):
 altitude = calculate_altitude(random_altitude_sats)
 print("Simulated Altitude:", altitude)
 ```
+Simulated Altitude: 508.25
